@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
+  success = document.querySelector("#success")
+  success.style.display = "none"
+  danger = document.querySelector("#danger")
+  danger.style.display = "none"
   // By default, load the inbox
   load_mailbox('inbox');
   send_form(document.querySelector("#compose-form"));
@@ -11,10 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function compose_email(email) {
 
-  success = document.querySelector("#success")
-  success.style.display = "none"
-  danger = document.querySelector("#danger")
-  danger.style.display = "none"
+ 
 
   
   // Show compose view and hide other views
@@ -126,13 +127,13 @@ function send_form(form) {
             success = document.querySelector("#success")
             success.style.display = "block"
             danger.style.display = "none"
+            load_mailbox("sent")
 
           }
           else {
             danger = document.querySelector("#danger")
             danger.style.display = "block"
             success.style.display = "none"
-            load_mailbox("sent")
 
 
           }

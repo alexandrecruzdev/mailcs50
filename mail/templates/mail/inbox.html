@@ -12,7 +12,13 @@
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
     
     <hr>
-    
+    <div class="alert alert-danger" id="danger" role="alert">
+        User with this email does not exist.
+      </div>
+
+      <div class="alert alert-success" id="success" role="alert">
+        Email sent successfully.
+      </div>
 
 
     <div id="emails-view">
@@ -36,13 +42,7 @@
     </div>
 
     <div id="compose-view">
-        <div class="alert alert-danger" id="danger" role="alert">
-            User with this email does not exist.
-          </div>
-
-          <div class="alert alert-success" id="success" role="alert">
-            Email sent successfully.
-          </div>
+      
 
         <h3>New Email</h3>
         <form id="compose-form">
