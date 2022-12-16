@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
@@ -7,13 +6,17 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#compose').addEventListener('click', compose_email);
   // By default, load the inbox
   load_mailbox('inbox');
-
-
   send_form(document.querySelector("#compose-form"));
 });
 
 function compose_email(email) {
 
+  success = document.querySelector("#success")
+  success.style.display = "none"
+  danger = document.querySelector("#danger")
+  danger.style.display = "none"
+
+  
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
@@ -24,8 +27,7 @@ function compose_email(email) {
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
 
-  if(typeof email.id == 'number')
-  {
+  if (typeof email.id == 'number') {
     from = document.querySelector("#from")
     to = document.querySelector("#compose-recipients");
     subject = document.querySelector("#compose-subject")
@@ -35,35 +37,32 @@ function compose_email(email) {
 
     to.disabled = true
     to.value = email.sender
-    body.value=`${email.body}`+`
+    body.value = `${email.body}` + `
     
 On ${date}, ${from.value} wrote:`
 
-    if(email.subject.toUpperCase().search("RE:") == 0) 
-    {
-        //tem re
-        subject.value = email.subject
-        subject.disabled = true
-        
-    }
-    else
-    {
-        //nao tem re
-        subject.value = `Re:${email.subject}`
-        subject.disabled = true
+    if (email.subject.toUpperCase().search("RE:") == 0) {
+      //tem re
+      subject.value = email.subject
+      subject.disabled = true
 
-        
+    }
+    else {
+      //nao tem re
+      subject.value = `Re:${email.subject}`
+      subject.disabled = true
+
+
     }
 
 
-    
+
 
   }
-  else
-  {
+  else {
     to.disabled = false
-    subject.disabled= false
-    
+    subject.disabled = false
+
   }
 
 }
@@ -103,7 +102,7 @@ function send_form(form) {
 
 
   submit_button.addEventListener('click', (e) => {
-
+    
     let to = document.querySelector("#compose-recipients").value
     let subject = document.querySelector("#compose-subject").value
     let body = document.querySelector("#compose-body").value
@@ -119,12 +118,36 @@ function send_form(form) {
       .then(response => response.json())
       .then(result => {
         // Print result
-        console.log(result);
-      });
 
+          if(result.error == undefined) 
+          {
+            
+
+            success = document.querySelector("#success")
+            success.style.display = "block"
+            danger.style.display = "none"
+
+          }
+          else {
+            danger = document.querySelector("#danger")
+            danger.style.display = "block"
+            success.style.display = "none"
+            load_mailbox("sent")
+
+
+          }
+          
+        
+      }) 
+      
+      
+    
+      
     document.querySelector('#compose-recipients').value = '';
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
+    
+    
 
   });
 
@@ -165,7 +188,8 @@ function print_emails(emails, mailbox) {
     let sender = document.createTextNode(`${emails[i].sender}`);
     let subject = document.createTextNode(`${emails[i].subject}`);
     let timestamp = document.createTextNode(`${emails[i].timestamp}`);
-    let a = document.createElement("a");
+    let a = document.createElement("button");
+    a.classList.add("btn","btn-outline-primary","btn-sm")
     let id = emails[i].id;
     a.addEventListener('click', (e) => {
       fetch(`/emails/${id}`)
@@ -180,7 +204,7 @@ function print_emails(emails, mailbox) {
 
 
 
-    let view = document.createTextNode(`to view`);
+    let view = document.createTextNode(`View`);
     a.appendChild(view)
 
 
@@ -218,7 +242,7 @@ function load_mailbody(email, mailbox) {
   p[1].innerHTML = `<strong>To:  ${email.recipients}</strong>`;
   p[2].innerHTML = `<strong>Subject:  ${email.subject}</strong>`;
   p[3].innerHTML = `<strong>Timestamp:  ${email.timestamp}</strong>`;
-  p[4].innerHTML = `${email.body}`;
+  p[4].innerText = `${email.body}`;
 
   archive = document.querySelector("#archive");
   dearchive = document.querySelector("#dearchive");
@@ -290,8 +314,8 @@ function dearchive_email(email) {
 }
 
 
-function reply_email(email){
-  
+function reply_email(email) {
+
   compose_email(email);
 }
 

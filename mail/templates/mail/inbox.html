@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block body %}
+
     <h2>{{ request.user.email }}</h2>
 
     <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
@@ -11,6 +12,8 @@
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
     
     <hr>
+    
+
 
     <div id="emails-view">
        
@@ -33,9 +36,17 @@
     </div>
 
     <div id="compose-view">
+        <div class="alert alert-danger" id="danger" role="alert">
+            User with this email does not exist.
+          </div>
+
+          <div class="alert alert-success" id="success" role="alert">
+            Email sent successfully.
+          </div>
+
         <h3>New Email</h3>
         <form id="compose-form">
-
+            {% csrf_token %}
             <div class="form-group">
                 From: <input disabled class="form-control" id="from" value="{{ request.user.email }}">
             </div>
