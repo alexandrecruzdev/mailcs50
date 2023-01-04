@@ -122,11 +122,11 @@ function send_form(form) {
 
           if(result.error == undefined) 
           {
-            
+            danger = document.querySelector("#danger")
+            if(danger.style.display == "block"){
+                danger.style.display = "none"
+            }
 
-            success = document.querySelector("#success")
-            success.style.display = "block"
-            danger.style.display = "none"
             load_mailbox("sent")
 
           }
@@ -172,7 +172,7 @@ function print_emails(emails, mailbox) {
 
 
     const tr = document.createElement('tr');
-
+    
     if (emails[i].read == true) {
       tr.style.backgroundColor = "rgb(215,215,215)";
     }
